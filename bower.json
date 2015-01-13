@@ -4,7 +4,7 @@
   "authors": [
     "Chang W. Doh <changwook.doh@gmail.com>"
   ],
-  "description": "`paper-fab-menu` creates a floating action button menu with paper elements.  On mobile device, tooltip is automatically shown, otherwise it will be hidden on desktop browsers.",
+  "description": "`paper-fab-menu` creates a floating action button menu with paper elements. On mobile device, tooltip is automatically shown, otherwise it will be hidden on desktop browsers.",
   "keywords": [
     "web-component",
     "web-components",
