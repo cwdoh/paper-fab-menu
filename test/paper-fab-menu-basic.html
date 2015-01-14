@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>paper-fab-menu</title>
+
+  <script src="../../webcomponentsjs/webcomponents.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+
+  <!-- Step 1: import the element to test -->
+  <link rel="import" href="../paper-fab-menu.html">
+
+</head>
+<body>
+
+  <paper-fab-menu id="fixture"></paper-fab-menu>
+
+  <script>
+    var myEl = document.getElementById('fixture');
+
+    suite('<paper-fab-menu>', function() {
+
+      test('defines the "opened" property', function() {
+        assert.equal(myEl.opened, false);
+      });
+    });
+  </script>
+
+</body>
+</html>
