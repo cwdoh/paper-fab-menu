@@ -51,3 +51,8 @@ paper-fab-menu #fam.show paper-fab-menu-item, #fam.show content[select="paper-fa
   -moz-transform: scale(1);
   -webkit-transform: scale(1);
 }
+
+paper-fab-menu #fam paper-fab-menu-item, #fam content[select="paper-fab-menu-item"]::content * {
+  will-change: opacity, transform;
+  transition: opacity 0.2s, transform 0.2s, -moz-transform 0.2s, -webkit-transform 0.2s;
+}
