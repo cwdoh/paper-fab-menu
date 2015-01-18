@@ -38,22 +38,20 @@
     <style>
       paper-fab-menu #fam paper-fab-menu-item,
       #fam content[select="paper-fab-menu-item"]::content * {
-        will-change: opacity, transform;
         transition: opacity {{duration}}s, transform {{duration}}s, -moz-transform {{duration}}s, -webkit-transform {{duration}}s;
-        transition-delay: {{delay}}s;
       }
     </style>
 
     <template repeat="{{items}}">
-      <style>
-        /* delay effect */
+      <style shim-shadowdom-css>
         paper-fab-menu #fam paper-fab-menu-item:nth-child({{index}}),
         #fam content[select="paper-fab-menu-item"]::content *:nth-child({{index}}) {
-          transition-delay: {{delay.default}}s;
+          transition-delay: {{delay.appear}}s;
         }
+
         paper-fab-menu #fam.show paper-fab-menu-item:nth-child({{index}}),
         #fam.show content[select="paper-fab-menu-item"]::content *:nth-child({{index}}) {
-          transition-delay: {{delay.show}}s;
+          transition-delay: {{delay.disappear}}s;
         }
       </style>
     </template>
@@ -114,21 +112,9 @@
       duration: 0.3,
 
       ready: function() {
-        var length = this.$.content.getDistributedNodes().length;
-        var duration = parseFloat(this.duration);
-        var delta = this.duration / length;
-        for (var index = 1 ; index <= length ; index ++) {
-          var factor = delta * index;
-          this.items.push({
-            index: index,
-            delay: {
-              default: factor,
-              show: duration - factor
-            }
-          });
-        }
-
+        this.calculateTransitionEffects.apply(this);
       },
+
       overlayOpenedChanged: function() {
         this.opened = this.$.overlay.opened;
       },
@@ -180,9 +166,32 @@
 
         this.$.overlay.close();
       },
+
       update: function() {
         this.$.fam.classList.toggle('show', this.opened);
         this[this.opened? 'open':'close']();
+      },
+
+      durationChanged: function() {
+        this.calculateTransitionEffects.apply(this);
+      },
+
+      calculateTransitionEffects: function() {
+        // this should calculates delays of menu items and updates them into css.
+        var length = this.$.content.getDistributedNodes().length;
+        var duration = parseFloat(this.duration);
+        var delta = this.duration / length;
+        this.items = [];
+        for (var index = 1 ; index <= length ; index ++) {
+          var factor = delta * index;
+          this.items.push({
+            index: index,
+            delay: {
+              appear: factor,
+              disappear: duration - factor
+            }
+          });
+        }
       }
     });
   </script>
