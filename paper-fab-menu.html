@@ -113,6 +113,9 @@
 
       ready: function() {
         this.calculateTransitionEffects.apply(this);
+
+        // set default icon
+        this.$.trigger.icon = this.icon;
       },
 
       overlayOpenedChanged: function() {
