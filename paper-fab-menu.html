@@ -32,24 +32,30 @@
 @homepage http://cwdoh.github.io/paper-fab-menu
 -->
 
-<polymer-element name="paper-fab-menu" attributes="icon closeIcon duration">
+<polymer-element name="paper-fab-menu" attributes="icon closeIcon duration zIndex">
   <template>
     <link rel="stylesheet" href="paper-fab-menu.css">
     <style>
-      paper-fab-menu #fam paper-fab-menu-item,
+      polyfill-next-selector { content: 'paper-fab-menu #fam paper-fab-menu-item'; }
       #fam content[select="paper-fab-menu-item"]::content * {
         transition: opacity {{duration}}s, transform {{duration}}s, -moz-transform {{duration}}s, -webkit-transform {{duration}}s;
       }
     </style>
 
     <template repeat="{{items}}">
-      <style shim-shadowdom-css>
-        paper-fab-menu #fam paper-fab-menu-item:nth-child({{index}}),
+      <style>
+/*        paper-fab-menu #fam paper-fab-menu-item:nth-child({{index}}) {
+          transition-delay: {{delay.appear}}s;
+        } */
+        polyfill-next-selector { content: 'paper-fab-menu #fam paper-fab-menu-item:nth-child({{index}})'; }
         #fam content[select="paper-fab-menu-item"]::content *:nth-child({{index}}) {
           transition-delay: {{delay.appear}}s;
         }
 
-        paper-fab-menu #fam.show paper-fab-menu-item:nth-child({{index}}),
+/*        paper-fab-menu #fam.show paper-fab-menu-item:nth-child({{index}}) {
+          transition-delay: {{delay.disappear}}s;
+        }*/
+        polyfill-next-selector { content: 'paper-fab-menu #fam.show paper-fab-menu-item:nth-child({{index}})'; }
         #fam.show content[select="paper-fab-menu-item"]::content *:nth-child({{index}}) {
           transition-delay: {{delay.disappear}}s;
         }
@@ -111,6 +117,15 @@
       */
       duration: 0.3,
 
+      /**
+      * Set z-index of container to contain whole parts of menu. This will be depth to determine z-orders of elements including paper-fab-menu.
+      *
+      * @attribute zIndex
+      * @type Integer
+      * @default 10000
+      */
+      zIndex: 10000,
+
       ready: function() {
         this.calculateTransitionEffects.apply(this);
 
@@ -133,6 +148,28 @@
       openedChanged: function() {
         this.update();
         this.fire('paper-fab-menu-open', this.opened);
+
+        // workaround for multiple backdrops when closing fab-menu.
+        if (!this.opened) {
+          var backdrops = document.querySelectorAll('html div.core-overlay-backdrop');
+
+          if (backdrops.length <= 1)
+            return;
+
+          for (l in backdrops) {
+            if (backdrops[l] != this.$.overlay.scrim) {
+              // add core-opened to other backdrop for workaround
+              backdrops[l].classList.add('core-opened')
+
+              // remove overlay of fab-menu.
+              this.$.overlay.scrim.remove();
+
+              // just do this at first backdrop.
+              return;
+            }
+          }
+        }
+        
       },
 
       /**

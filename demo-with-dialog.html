@@ -1,0 +1,65 @@
+<!--
+    @license
+    Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+    This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+    The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+    The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+    Code distributed by Google as part of the polymer project is also
+    subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>paper-fab-menu Demo</title>
+
+  <script src="../webcomponentsjs/webcomponents.min.js"></script>
+  <link rel="import" href="paper-fab-menu.html">
+
+  <link href="../font-roboto/roboto.html" rel="import">
+  <link href="../paper-button/paper-button.html" rel="import">
+
+  <link href="../paper-dialog/paper-dialog.html" rel="import">
+  <link href="../paper-dialog/paper-action-dialog.html" rel="import">
+
+  <style>
+    body {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-tap-highlight-color: rgba(0,0,0,0);
+      -webkit-touch-callout: none;
+    }
+  </style>
+
+</head>
+<body unresolved>
+
+  <p>An example of using <code>&lt;paper-fab-menu&gt;</code>.</p>
+  <p>Try this demo on mobile/desktop browsers to see how tooltips show.
+    <ul>
+      <li>MOBILE: Tooltip is automatically shown.</li>
+      <li>DESKTOP: Tooltip will be hidden.</li>
+    </ul>
+  </p>
+
+  <paper-fab-menu icon="menu" closeIcon="close" duration="0.3">
+    <paper-fab-menu-item icon="info-outline" color="blue;" tooltip="Information"></paper-fab-menu-item>
+    <paper-fab-menu-item icon="alarm" color="purple;" tooltip="Alarm"></paper-fab-menu-item>
+    <paper-fab-menu-item icon="star-outline" color="green;" tooltip="Favorites"></paper-fab-menu-item>
+    <paper-fab-menu-item icon="list" color="orange;" tooltip="List"></paper-fab-menu-item>
+  </paper-fab-menu>
+
+  <paper-action-dialog backdrop autoCloseDisabled layered="false">
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+
+    <paper-button affirmative autofocus>Tap me to close</paper-button>
+  </paper-action-dialog>
+
+  <script type="text/javascript">
+    var dialog = document.querySelector('paper-action-dialog');
+    var items = document.querySelectorAll('paper-fab-menu-item');
+  </script>
+</body>
+</html>
