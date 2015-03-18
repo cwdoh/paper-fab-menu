@@ -30,7 +30,7 @@
 @status alpha
 @homepage http://cwdoh.github.io/paper-fab-menu
 -->
-<polymer-element name="paper-fab-menu-item" attributes="icon tooltip color">
+<polymer-element name="paper-fab-menu-item" attributes="icon tooltip color src">
   <template>
     <style>
     :host {
@@ -39,7 +39,7 @@
     </style>
 
     <core-tooltip id="tooltip" label="{{tooltip}}" position="left">
-      <paper-fab id="icon" icon="{{icon}}" mini style="background-color: {{color}}"></paper-fab>
+      <paper-fab id="icon" icon="{{icon}}" src="{{src}}" mini style="background-color: {{color}}"></paper-fab>
     </core-tooltip>
 
   </template>
