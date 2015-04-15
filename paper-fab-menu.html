@@ -32,7 +32,7 @@
 @homepage http://cwdoh.github.io/paper-fab-menu
 -->
 
-<polymer-element name="paper-fab-menu" attributes="icon closeIcon duration zIndex">
+<polymer-element name="paper-fab-menu" attributes="icon closeIcon duration zIndex overlay">
   <template>
     <link rel="stylesheet" href="paper-fab-menu.css">
     <style>
@@ -62,7 +62,9 @@
       </style>
     </template>
 
-    <core-overlay id="overlay" layered backdrop transition="core-transition-fade" on-core-overlay-open="{{overlayOpenedChanged}}"></core-overlay>
+	<template if="{{overlay}}">
+		<core-overlay id="overlay" layered backdrop transition="core-transition-fade" on-core-overlay-open="{{overlayOpenedChanged}}"></core-overlay>
+	</template>
     <div layout vertical center class="container" id="fam">
       <content id="content" select="paper-fab-menu-item"></content>
       <paper-fab icon="menu" id="trigger" on-click="{{toggle}}"></paper-fab>
@@ -125,6 +127,14 @@
       * @default 10000
       */
       zIndex: 10000,
+	  
+	  /**
+	  * Set if the overlay of screen should be used when the menu is opened.
+	  * @attribute overlay
+	  * @type boolean
+      * @default false
+	  */
+	  overlay: false,
 
       ready: function() {
         this.calculateTransitionEffects.apply(this);
