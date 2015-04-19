@@ -168,8 +168,8 @@
           if (backdrops.length <= 1)
             return;
 
-          for (l in backdrops) {
-            if(this.overlay) {
+          if(this.overlay) {
+            for (l in backdrops) {
               if (backdrops[l] != this.$.overlay.scrim) {
                 // add core-opened to other backdrop for workaround
                 backdrops[l].classList.add('core-opened')
