@@ -32,7 +32,7 @@
 @homepage http://cwdoh.github.io/paper-fab-menu
 -->
 
-<polymer-element name="paper-fab-menu" attributes="icon closeIcon duration zIndex">
+<polymer-element name="paper-fab-menu" attributes="icon closeIcon duration zIndex overlay">
   <template>
     <link rel="stylesheet" href="paper-fab-menu.css">
     <style>
@@ -62,7 +62,9 @@
       </style>
     </template>
 
-    <core-overlay id="overlay" layered backdrop transition="core-transition-fade" on-core-overlay-open="{{overlayOpenedChanged}}"></core-overlay>
+	<template if="{{overlay}}">
+		<core-overlay id="overlay" layered backdrop transition="core-transition-fade" on-core-overlay-open="{{overlayOpenedChanged}}"></core-overlay>
+	</template>
     <div layout vertical center class="container" id="fam">
       <content id="content" select="paper-fab-menu-item"></content>
       <paper-fab icon="menu" id="trigger" on-click="{{toggle}}"></paper-fab>
@@ -125,6 +127,14 @@
       * @default 10000
       */
       zIndex: 10000,
+	  
+      /**
+      * Set if the overlay of screen should be used when the menu is opened.
+      * @attribute overlay
+      * @type boolean
+      * @default false
+      */
+      overlay: false,
 
       ready: function() {
         this.calculateTransitionEffects.apply(this);
@@ -134,7 +144,9 @@
       },
 
       overlayOpenedChanged: function() {
-        this.opened = this.$.overlay.opened;
+        if(this.overlay) {
+          this.opened = this.$.overlay.opened;
+        }
       },
 
       /**
@@ -156,20 +168,21 @@
           if (backdrops.length <= 1)
             return;
 
-          for (l in backdrops) {
-            if (backdrops[l] != this.$.overlay.scrim) {
-              // add core-opened to other backdrop for workaround
-              backdrops[l].classList.add('core-opened')
+          if(this.overlay) {
+            for (l in backdrops) {
+              if (backdrops[l] != this.$.overlay.scrim) {
+                // add core-opened to other backdrop for workaround
+                backdrops[l].classList.add('core-opened')
 
-              // remove overlay of fab-menu.
-              this.$.overlay.scrim.remove();
+                // remove overlay of fab-menu.
+                this.$.overlay.scrim.remove();
 
-              // just do this at first backdrop.
-              return;
+                // just do this at first backdrop.
+                return;
+              }
             }
           }
         }
-        
       },
 
       /**
@@ -190,8 +203,10 @@
         this.opened = true;
         this.$.trigger.icon = this.closeIcon;
         this.$.trigger.setAttribute("activate", "");
-
-        this.$.overlay.open();
+		
+        if(this.overlay) {
+          this.$.overlay.open();
+        }
       },
 
       /**
@@ -204,7 +219,9 @@
         this.$.trigger.icon = this.icon;
         this.$.trigger.removeAttribute("activate");
 
-        this.$.overlay.close();
+    		if(this.overlay) {
+    			this.$.overlay.close();
+    		}
       },
 
       update: function() {
