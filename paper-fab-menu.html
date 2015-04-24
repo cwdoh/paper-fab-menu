@@ -44,17 +44,11 @@
 
     <template repeat="{{items}}">
       <style>
-/*        paper-fab-menu #fam paper-fab-menu-item:nth-child({{index}}) {
-          transition-delay: {{delay.appear}}s;
-        } */
         polyfill-next-selector { content: 'paper-fab-menu #fam paper-fab-menu-item:nth-child({{index}})'; }
         #fam content[select="paper-fab-menu-item"]::content *:nth-child({{index}}) {
           transition-delay: {{delay.appear}}s;
         }
 
-/*        paper-fab-menu #fam.show paper-fab-menu-item:nth-child({{index}}) {
-          transition-delay: {{delay.disappear}}s;
-        }*/
         polyfill-next-selector { content: 'paper-fab-menu #fam.show paper-fab-menu-item:nth-child({{index}})'; }
         #fam.show content[select="paper-fab-menu-item"]::content *:nth-child({{index}}) {
           transition-delay: {{delay.disappear}}s;
