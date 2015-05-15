@@ -26,7 +26,8 @@
     "core-overlay": "Polymer/core-overlay",
     "core-tooltip": "Polymer/core-tooltip",
     "polymer": "~0.5.2",
-    "webcomponentsjs": "~0.5.2"
+    "webcomponentsjs": "~0.5.2",
+    "paper-fab": "Polymer/paper-fab#^0.5"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^2.0.5"
