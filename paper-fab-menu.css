@@ -20,6 +20,7 @@
   padding: 1em;
   /* layer hack */
   transform: translateZ(0);
+  overflow: hidden;
 }
 
 .container.show {
