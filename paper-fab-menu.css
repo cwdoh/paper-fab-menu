@@ -73,6 +73,8 @@ paper-fab-menu #fam paper-fab-menu-item, #fam content[select="paper-fab-menu-ite
 }
 
 .container .item-container {
+    left:0;
+    right: 0;
     transition-property: transform, -moz-transform, -webkit-transform;
     transform: scale3d(0, 0, 0);
     -moz-transform: scale3d(0, 0, 0);
