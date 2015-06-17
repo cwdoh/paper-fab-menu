@@ -41,6 +41,10 @@
         transition: opacity {{duration}}s, transform {{duration}}s, -moz-transform {{duration}}s, -webkit-transform {{duration}}s;
       }
 
+      .container .item-container {
+        transition-delay: {{duration}}s;
+      }
+
       /**
       * Below styles will prevent hijacking of tap event upon trigger button
       * by container height during hide floating menus.
@@ -58,7 +62,6 @@
         -moz-transform: translate3d(0, 100%, 0);
         -webkit-transform: translate3d(0, 100%, 0);
       }
-
     </style>
 
     <template repeat="{{items}}">
@@ -79,8 +82,10 @@
 		<core-overlay id="overlay" layered backdrop transition="core-transition-fade" on-core-overlay-open="{{overlayOpenedChanged}}"></core-overlay>
 	</template>
     <div layout vertical center class="container" id="fam">
-      <div layout vertical center class="menus">
-        <content id="content" select="paper-fab-menu-item"></content>
+      <div layout vertical center style="position: absolute; overflow: visible;">
+        <div layout vertical center class="item-container" style="position: absolute; bottom: 0;">
+          <content id="content" select="paper-fab-menu-item"></content>
+        </div>
       </div>
       <paper-fab icon="menu" id="trigger" on-click="{{toggle}}"></paper-fab>
     </div>
