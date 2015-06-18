@@ -1,0 +1,44 @@
+{
+  "name": "paper-fab-menu",
+  "authors": [
+    "Chang W. Doh <changwook.doh@gmail.com>"
+  ],
+  "description": "`paper-fab-menu` creates a floating action button menu with paper elements. On mobile device, tooltip is automatically shown, otherwise it will be hidden on desktop browsers.",
+  "keywords": [
+    "web-component",
+    "web-components",
+    "polymer",
+    "paper-fab-menu"
+  ],
+  "main": "paper-fab-menu.html",
+  "license": "MIT",
+  "homepage": "https://github.com/cwdoh/paper-fab-menu/",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "core-icons": "Polymer/core-icons",
+    "core-overlay": "Polymer/core-overlay",
+    "core-tooltip": "Polymer/core-tooltip",
+    "polymer": "~0.5.2",
+    "webcomponentsjs": "~0.5.2",
+    "paper-fab": "Polymer/paper-fab#^0.5"
+  },
+  "devDependencies": {
+    "web-component-tester": "Polymer/web-component-tester#^2.0.5"
+  },
+  "_release": "0a3e415819",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "0a3e415819c94b6a026788d50729bc02ce91aaab"
+  },
+  "_source": "git://github.com/cwdoh/paper-fab-menu.git",
+  "_target": "master",
+  "_originalSource": "cwdoh/paper-fab-menu",
+  "_direct": true
+}

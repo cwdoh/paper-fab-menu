@@ -1,0 +1,90 @@
+/*
+ * @license
+ * Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+ * This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+ * The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+ * The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+ * Code distributed by Google as part of the polymer project is also
+ * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+ */
+
+:host {
+  /*position: absolute !important;*/
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 0.5em;
+  padding-top: 0;
+
+  z-index: 12;
+}
+
+.container {
+  /* layer hack */
+  transform: translateZ(0);
+  overflow: visible;
+}
+
+.container.show {
+  z-index: 10000;
+}
+
+.container.show {
+  z-index: {{zIndex}};
+}
+
+#trigger {
+  margin-top: 0.5em;
+}
+
+
+#trigger::shadow core-icon {
+  transition: transform {{duration}}s;
+  will-change: transform;
+}
+
+polyfill-next-selector { content: '#trigger[activate] core-icon'; }
+#trigger[activate]::shadow core-icon {
+  transform: rotate(360deg);
+  -moz-transform: rotate(360deg);
+  -webkit-transform: rotate(360deg);
+}
+
+polyfill-next-selector { content: 'paper-fab-menu #fam paper-fab-menu-item, #fam content[select="paper-fab-menu-item"] *'; }
+paper-fab-menu #fam paper-fab-menu-item, #fam content[select="paper-fab-menu-item"]::content * {
+  opacity: 0;
+  transform: scale(0);
+  -moz-transform: scale(0);
+  -webkit-transform: scale(0);
+}
+
+polyfill-next-selector { content: 'paper-fab-menu #fam.show paper-fab-menu-item, #fam.show content[select="paper-fab-menu-item"] *'; }
+paper-fab-menu #fam.show paper-fab-menu-item, #fam.show content[select="paper-fab-menu-item"]::content * {
+  opacity: 1;
+  transform: scale(1);
+  -moz-transform: scale(1);
+  -webkit-transform: scale(1);
+}
+
+polyfill-next-selector { content: 'paper-fab-menu #fam paper-fab-menu-item, #fam content[select="paper-fab-menu-item"] *' }
+paper-fab-menu #fam paper-fab-menu-item, #fam content[select="paper-fab-menu-item"]::content * {
+  will-change: opacity, transform;
+  transition: opacity 0.2s, transform 0.2s, -moz-transform 0.2s, -webkit-transform 0.2s;
+}
+
+.container .item-container {
+    left:0;
+    right: 0;
+    transition-property: transform, -moz-transform, -webkit-transform;
+    transform: scale3d(0, 0, 0);
+    -moz-transform: scale3d(0, 0, 0);
+    -webkit-transform: scale3d(0, 0, 0);
+}
+
+.container.show .item-container {
+    transition-delay: 0s;
+    transition-property: transform, -moz-transform, -webkit-transform;
+    transform: scale3d(1, 1, 1);
+    -moz-transform: scale3d(1, 1, 1);
+    -webkit-transform: scale3d(1, 1, 1);
+}

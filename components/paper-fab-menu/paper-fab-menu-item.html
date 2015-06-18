@@ -1,0 +1,83 @@
+<!--
+    @license
+    Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+    This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+    The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+    The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+    Code distributed by Google as part of the polymer project is also
+    subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../core-icons/core-icons.html">
+<link rel="import" href="../core-tooltip/core-tooltip.html">
+<link rel="import" href="../paper-fab/paper-fab.html">
+
+<!--
+`paper-fab-menu-item` creates a item of floating action button menu with paper elements. On mobile device, tooltip is automatically shown, otherwise it will be hidden on desktop browsers.
+
+##### Example
+
+    <paper-fab-menu icon="menu" closeIcon="close" duration="0.3">
+      <paper-fab-menu-item icon="info-outline" color="blue;" tooltip="Information"></paper-fab-menu-item>
+      <paper-fab-menu-item icon="alarm" color="purple;" tooltip="Alarm"></paper-fab-menu-item>
+      <paper-fab-menu-item icon="star-outline" color="green;" tooltip="Favorites"></paper-fab-menu-item>
+      <paper-fab-menu-item icon="list" color="orange;" tooltip="List"></paper-fab-menu-item>
+    </paper-fab-menu>
+
+@element paper-fab-menu-item
+@blurb `paper-fab-menu-item` creates a item of floating action button menu with paper elements.
+@status alpha
+@homepage http://cwdoh.github.io/paper-fab-menu
+-->
+<polymer-element name="paper-fab-menu-item" attributes="icon tooltip color src">
+  <template>
+    <style>
+    :host {
+      margin: 5px 5px;
+    }
+    </style>
+
+    <core-tooltip id="tooltip" label="{{tooltip}}" position="left">
+      <paper-fab id="icon" icon="{{icon}}" src="{{src}}" mini style="background-color: {{color}}"></paper-fab>
+    </core-tooltip>
+
+  </template>
+  <script>
+    Polymer({
+      /**
+      * Set opened the icon of menu item.
+      *
+      * @attribute icon
+      * @type String
+      * @default 'info-outline'
+      */
+      icon: 'info-outline',
+
+      /**
+      * Set the tooltip text. Tooltips will be shown on the left side of menuitem.
+      *
+      * @attribute tooltip
+      * @type String
+      * @default ''
+      */
+      tooltip: '',
+
+      /**
+      * Set the background color of menu item.
+      *
+      * @attribute color
+      * @type Color
+      * @default 'red'
+      */
+      color: 'red',
+
+      ready: function() {
+        if ('ontouchend' in document) {
+          this.$.tooltip.show = true;
+        }
+      },
+
+    });
+  </script>
+</polymer-element>

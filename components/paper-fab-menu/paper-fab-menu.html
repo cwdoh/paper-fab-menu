@@ -1,0 +1,275 @@
+<!--
+    @license
+    Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+    This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+    The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+    The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+    Code distributed by Google as part of the polymer project is also
+    subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../core-icons/core-icons.html">
+<link rel="import" href="../core-overlay/core-overlay.html">
+<link rel="import" href="../paper-fab/paper-fab.html">
+
+<link rel="import" href="paper-fab-menu-item.html">
+
+<!--
+`paper-fab-menu` creates a floating action button menu with paper elements. By default, the menu will be hide. Use `opened` or `toggle()` to show/hide the menu. On mobile device, tooltip is automatically shown, otherwise it will be hidden on desktop browsers.
+
+##### Example
+
+    <paper-fab-menu icon="menu" closeIcon="close" duration="0.3">
+      <paper-fab-menu-item icon="info-outline" color="blue;" tooltip="Information"></paper-fab-menu-item>
+      <paper-fab-menu-item icon="alarm" color="purple;" tooltip="Alarm"></paper-fab-menu-item>
+      <paper-fab-menu-item icon="star-outline" color="green;" tooltip="Favorites"></paper-fab-menu-item>
+      <paper-fab-menu-item icon="list" color="orange;" tooltip="List"></paper-fab-menu-item>
+    </paper-fab-menu>
+
+@element paper-fab-menu
+@blurb `paper-fab-menu` creates a floating action button menu with paper elements.
+@status alpha
+@homepage http://cwdoh.github.io/paper-fab-menu
+-->
+
+<polymer-element name="paper-fab-menu" attributes="icon closeIcon duration zIndex overlay">
+  <template>
+    <link rel="stylesheet" href="paper-fab-menu.css">
+    <style>
+      polyfill-next-selector { content: 'paper-fab-menu #fam paper-fab-menu-item'; }
+      #fam content[select="paper-fab-menu-item"]::content * {
+        transition: opacity {{duration}}s, transform {{duration}}s, -moz-transform {{duration}}s, -webkit-transform {{duration}}s;
+      }
+
+      .container .item-container {
+        transition-delay: {{duration}}s;
+      }
+
+      /**
+      * Below styles will prevent hijacking of tap event upon trigger button
+      * by container height during hide floating menus.
+      */
+      polyfill-next-selector { content: 'paper-fab-menu #fam:not(.show) .menus'; }
+      #fam .menus {
+        will-change: transform;
+        transition-property: transform, -moz-transform, -webkit-transform;
+      }
+
+      polyfill-next-selector { content: 'paper-fab-menu #fam:not(.show) .menus'; }
+      #fam:not(.show) .menus {
+        transition-delay: {{duration}}s;
+        transform: translate3d(0, 100%, 0);
+        -moz-transform: translate3d(0, 100%, 0);
+        -webkit-transform: translate3d(0, 100%, 0);
+      }
+    </style>
+
+    <template repeat="{{items}}">
+      <style>
+        polyfill-next-selector { content: 'paper-fab-menu #fam paper-fab-menu-item:nth-child({{index}})'; }
+        #fam content[select="paper-fab-menu-item"]::content *:nth-child({{index}}) {
+          transition-delay: {{delay.appear}}s;
+        }
+
+        polyfill-next-selector { content: 'paper-fab-menu #fam.show paper-fab-menu-item:nth-child({{index}})'; }
+        #fam.show content[select="paper-fab-menu-item"]::content *:nth-child({{index}}) {
+          transition-delay: {{delay.disappear}}s;
+        }
+      </style>
+    </template>
+
+	<template if="{{overlay}}">
+		<core-overlay id="overlay" layered backdrop transition="core-transition-fade" on-core-overlay-open="{{overlayOpenedChanged}}"></core-overlay>
+	</template>
+    <div layout vertical center class="container" id="fam">
+      <div layout vertical center style="position: absolute; overflow: visible; left:0; right: 0;">
+        <div layout vertical center class="item-container" style="position: absolute; bottom: 0;">
+          <content id="content" select="paper-fab-menu-item"></content>
+        </div>
+      </div>
+      <paper-fab icon="menu" id="trigger" on-click="{{toggle}}"></paper-fab>
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+      /**
+      * Set opened to true to show the floating menu and to false to hide it.
+      *
+      * @attribute opened
+      * @type boolean
+      * @default false
+      */
+      opened: false,
+
+      /**
+      * Automactically set delay to each item. This will be deprecated at later version.
+      *
+      * @attribute items
+      * @type Array
+      * @default []
+      */
+      items: [],
+
+      /**
+      * Set the default icon of main button to show floating menu
+      *
+      * @attribute icon
+      * @type String
+      * @default 'menu'
+      */
+      icon: 'menu',
+
+      /**
+      * Set the icon of main button to close floating menu
+      *
+      * @attribute closeIcon
+      * @type String
+      * @default 'close'
+      */
+      closeIcon: 'close',
+
+      /**
+      * Set duration of total animation to show/hide menu. This will be seed value to determine delay and duration of each menu item.
+      *
+      * @attribute duration
+      * @type Float
+      * @default 0.3
+      */
+      duration: 0.3,
+
+      /**
+      * Set z-index of container to contain whole parts of menu. This will be depth to determine z-orders of elements including paper-fab-menu.
+      *
+      * @attribute zIndex
+      * @type Integer
+      * @default 10000
+      */
+      zIndex: 10000,
+	  
+      /**
+      * Set if the overlay of screen should be used when the menu is opened.
+      * @attribute overlay
+      * @type boolean
+      * @default true
+      */
+      overlay: true,
+
+      ready: function() {
+        this.calculateTransitionEffects.apply(this);
+
+        // set default icon
+        this.$.trigger.icon = this.icon;
+      },
+
+      overlayOpenedChanged: function() {
+        if(this.overlay) {
+          this.opened = this.$.overlay.opened;
+        }
+      },
+
+      /**
+       * The `paper-fab-menu-open` event is fired whenever menu
+       * is opened or closed.
+       *
+       * @event paper-fab-menu-open
+       * @param {Object} detail
+       */
+
+      openedChanged: function() {
+        this.update();
+        this.fire('paper-fab-menu-open', this.opened);
+
+        // workaround for multiple backdrops when closing fab-menu.
+        if (!this.opened) {
+          var backdrops = document.querySelectorAll('html div.core-overlay-backdrop');
+
+          if (backdrops.length <= 1)
+            return;
+
+          if(this.overlay) {
+            for (l in backdrops) {
+              if (backdrops[l] != this.$.overlay.scrim) {
+                // add core-opened to other backdrop for workaround
+                backdrops[l].classList.add('core-opened')
+
+                // remove overlay of fab-menu.
+                this.$.overlay.scrim.remove();
+
+                // just do this at first backdrop.
+                return;
+              }
+            }
+          }
+        }
+      },
+
+      /**
+       * The `toggle` method will toggle the state of menu.
+       *
+       * @method toggle
+       */
+      toggle: function() {
+        this.opened = !this.opened;
+      },
+
+      /**
+       * The `open` method will show the menu.
+       *
+       * @method open
+       */
+      open: function() {
+        this.opened = true;
+        this.$.trigger.icon = this.closeIcon;
+        this.$.trigger.setAttribute("activate", "");
+		
+        if(this.overlay) {
+          this.$.overlay.open();
+        }
+      },
+
+      /**
+       * The `close` method will hide the menu.
+       *
+       * @method close
+       */
+      close: function() {
+        this.opened = false;
+        this.$.trigger.icon = this.icon;
+        this.$.trigger.removeAttribute("activate");
+
+    		if(this.overlay) {
+    			this.$.overlay.close();
+    		}
+      },
+
+      update: function() {
+        this.$.fam.classList.toggle('show', this.opened);
+        this[this.opened? 'open':'close']();
+      },
+
+      durationChanged: function() {
+        this.calculateTransitionEffects.apply(this);
+      },
+
+      calculateTransitionEffects: function() {
+        // this should calculates delays of menu items and updates them into css.
+        var length = this.$.content.getDistributedNodes().length;
+        var duration = parseFloat(this.duration);
+        var delta = this.duration / length;
+        this.items = [];
+        for (var index = 1 ; index <= length ; index ++) {
+          var factor = delta * index;
+          this.items.push({
+            index: index,
+            delay: {
+              appear: factor,
+              disappear: duration - factor
+            }
+          });
+        }
+      }
+    });
+  </script>
+</polymer-element>
